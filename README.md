@@ -1,34 +1,51 @@
+<div align="center">
+
 # GrowUp
 
-GrowUp is a desktop AI image enhancement and restoration application built with Python and PySide6. It provides 2× / 4× AI image upscaling, denoise, sharpen, deblur, Before / After comparison, drag & drop image support, image preview, enhanced image saving, and a settings interface with theme and processing options. It uses PyTorch, OpenCV, Pillow, Real-ESRGAN, and BasicSR for image processing and AI enhancement.
+**AI Image Enhancement & Restoration**
+
+A desktop image enhancement application built with Python, PySide6, PyTorch, OpenCV and Real-ESRGAN.
+
+</div>
+
+---
 
 ## Features
 
-- 2× / 4× AI Upscaling
-- Denoise
-- Sharpen
-- Deblur
-- Before / After Comparison Slider
-- Drag & Drop
-- Image Preview
-- Save Enhanced Images
-- Dark / Light / System Themes
-- Settings Page
+<div align="center">
+
+| Feature | Description |
+|---|---|
+| **AI Upscaling** | 2× and 4× image upscaling |
+| **Denoise** | Reduce image noise |
+| **Sharpen** | Improve image details |
+| **Deblur** | Enhance blurry images |
+| **Before / After** | Interactive comparison slider |
+| **Drag & Drop** | Drop images directly into GrowUp |
+| **Save** | Export enhanced images |
+| **Themes** | System, Light and Dark modes |
+| **Settings** | Configure application preferences |
+
+</div>
+
+---
 
 ## Tech Stack
 
-- Python
-- PySide6
-- PyTorch
-- OpenCV
-- Pillow
-- Real-ESRGAN
-- BasicSR
+<div align="center">
+
+**Python** • **PySide6** • **PyTorch** • **OpenCV** • **Pillow** • **Real-ESRGAN** • **BasicSR**
+
+</div>
+
+---
 
 ## Project Structure
 
+```text
 GrowUp/
 ├── app.py
+│
 ├── ui/
 │   ├── main_window.py
 │   ├── title_bar.py
@@ -36,22 +53,29 @@ GrowUp/
 │   ├── settings_page.py
 │   ├── comparison_view.py
 │   └── drop_frame.py
+│
 ├── processing/
 │   ├── image_processing.py
 │   └── upscaler.py
+│
 ├── models/
 └── assets/
+```text
 
-## Run
 
+tAI Model
+
+GrowUp currently uses Real-ESRGAN for AI-powered image upscaling.
+
+The application uses GPU acceleration through PyTorch + CUDA when available.
+
+Run
 python app.py
+<div align="center">
+GrowUp
 
-## Status
+Enhance. Restore. Grow.
 
-GrowUp is currently under active development.
+Currently under active development.
 
-More restoration tools, batch processing, processing controls, and UI improvements are planned.
-
-## License
-
-This project is currently for development and educational purposes.
+</div> ```

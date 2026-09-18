@@ -1,4 +1,5 @@
 from pathlib import Path
+from PySide6.QtCore import QSettings
 
 from PySide6.QtWidgets import (
     QCheckBox,
@@ -18,8 +19,9 @@ class SettingsPage(QWidget):
 
     def __init__(self, window):
         super().__init__()
-
         self.window = window
+        self.settings = QSettings("GrowUp", "Growup")
+        saved_location = self.settings.value("save_location",str(Path.home() / "Pictures" / "GrowUp"))
 
         layout = QHBoxLayout(self)
         layout.setContentsMargins(30, 30, 30, 30)
@@ -59,7 +61,7 @@ class SettingsPage(QWidget):
 
         save_layout = QHBoxLayout()
         self.save_location = QLineEdit()
-        self.save_location.setText(str(Path.home() / "Pictures" / "GrowUp"))
+        self.save_location.setText(saved_location)
 
         change = QPushButton("Change")
         change.clicked.connect(self.change_save_location)
@@ -71,22 +73,36 @@ class SettingsPage(QWidget):
         content_layout.addWidget(QCheckBox("Open output folder after processing"))
 
         content_layout.addSpacing(25)
+        # theme setting panel 14-09-26
         content_layout.addWidget(QLabel("Theme"))
         self.theme = QComboBox()
         self.theme.addItems(["System", "Light", "Dark"])
-        self.theme.currentTextChanged.connect(self.window.change_theme)
+        saved_theme = self.settings.value("theme", "System")
+        self.theme.setCurrentText(saved_theme)
+        self.theme.currentTextChanged.connect(self.change_theme)
         content_layout.addWidget(self.theme)
-
+        #-----------------------------------------------------------------------------------------
         content_layout.addSpacing(25)
         content_layout.addWidget(QLabel("Default upscale"))
         self.default_scale = QComboBox()
         self.default_scale.addItems(["2×", "4×"])
+        saved_scale = self.settings.value("default_scale", "2×")
+        self.default_scale.setCurrentText(saved_scale)
+        self.default_scale.currentTextChanged.connect(lambda scale: self.settings.setValue("default_scale", scale))
         content_layout.addWidget(self.default_scale)
         content_layout.addStretch()
 
         layout.addWidget(content, 1)
-
+    # default location funtion 14-09-26
     def change_save_location(self):
         folder = QFileDialog.getExistingDirectory(self, "Choose Save Location")
         if folder:
             self.save_location.setText(folder)
+            self.settings.setValue("save_location", folder)
+    #-----------------------------------------------------------------------------------------
+
+    # theme funtion 14-09-26
+    def change_theme(self, theme):
+        self.settings.setValue("theme", theme)
+        self.window.change_theme(theme)
+     #-----------------------------------------------------------------------------------------

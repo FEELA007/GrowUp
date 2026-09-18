@@ -9,6 +9,7 @@ from processing.image_processing import process_image
 from processing.upscaler import upscale_image
 from ui.comparison_view import ComparisonView
 from ui.drop_frame import DropFrame
+from PySide6.QtCore import QSettings
 #enhance page 14-09-26
 class EnhancePage(QWidget):
     #for making page 
@@ -18,6 +19,7 @@ class EnhancePage(QWidget):
         self.original_image = None
         self.enhanced_image = None
         self.window = window
+        self.settings = QSettings("GrowUp", "GrowUp")
         self.image_path = None
         layout = QVBoxLayout(self)
         layout.setContentsMargins(30, 24, 30, 25)
@@ -48,7 +50,7 @@ class EnhancePage(QWidget):
         heading.setObjectName("heading")
         panel_layout.addWidget(heading)
         #---------------------------------------------------------------------------------------------------------
-        # upscale buttons 
+        # upscale buttons 14-09-26
         upscale_label = QLabel("Upscale")
         upscale_label.setObjectName("sectionLabel")
         panel_layout.addWidget(upscale_label)
@@ -57,10 +59,12 @@ class EnhancePage(QWidget):
         self.four_x = QPushButton("4×")
         self.two_x.setCheckable(True)
         self.four_x.setCheckable(True)
-        self.two_x.setChecked(True)
+        saved_scale = self.settings.value("default_scale", "2×")
+        self.two_x.setChecked(saved_scale == "2×")
+        self.four_x.setChecked(saved_scale == "4×")
         self.two_x.clicked.connect(lambda: self.select_scale(self.two_x, self.four_x))
         self.four_x.clicked.connect(lambda: self.select_scale(self.four_x, self.two_x))
-        self.upscale_factor = 2
+        self.upscale_factor = 4 if saved_scale == "4×" else 2
         scale_layout.addWidget(self.two_x)
         scale_layout.addWidget(self.four_x)
         panel_layout.addLayout(scale_layout)
@@ -143,10 +147,9 @@ class EnhancePage(QWidget):
     def select_scale(self, selected, other):
         selected.setChecked(True)
         other.setChecked(False)
-        if selected == self.two_x:
-            self.upscale_factor = 2
-        else:
-            self.upscale_factor = 4
+        self.upscale_factor=4 if selected ==self.four_x else 2
+        self.settings.setValue("default_scale", f"{self.upscale_factor}×")
+
     
     #--------------------------------------------------------------------------------------------------------------------------------------
     def load_dropped_image(self, path):

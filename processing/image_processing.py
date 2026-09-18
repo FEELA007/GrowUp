@@ -18,6 +18,6 @@ def process_image(image, denoise_value, sharpen_value, deblur_value):
     if deblur_value > 0:
         amount = deblur_value / 100.0
         blurred = cv2.GaussianBlur(image, (0, 0), 2)
+        image = cv2.addWeighted(image, 1.0 + amount, blurred, -amount, 0)
 
-    image = cv2.addWeighted(image, 1.0 + amount, blurred, -amount, 0)
     return image
